@@ -11,43 +11,39 @@ AMI_ID = 'ami-1624987f'
 INSTANCE_TYPE = 't1.micro'
 INSTANCE_ARN = 'arn:aws:iam::614962951171:instance-profile/spot-controller'
 USER_DATA = '''
-    #!/bin/bash
+#!/bin/bash
 
-    # pull down code for spot
-    # pull down code for itunes
-    git clone https://github.com/gimbel0893/aws_spot_itunes_grabber.git scripts
+#yum update --assumeyes
+yum install --assumeyes git python27 MySQL-python mysql-server mysql-devel python27-devel gcc
 
-    # virualenv setup
-    sudo yum install --assumeyes python27
-    sudo easy_install virtualenv
-    virtualenv --python=python27 env_spot
-    virtualenv --python=python27 env_itunes
+mkdir /aws_spot_itunes_grabber
+cd /aws_spot_itunes_grabber
+git clone https://github.com/gimbel0893/aws_spot_itunes_grabber.git scripts
 
-    # spot setup
-    source env_spot/bin/activate
-    pip install -r scripts/spot_instance/requirements.txt
-    deactivate
+# virualenv setup
+easy_install virtualenv
+virtualenv --python=python27 env_spot
+virtualenv --python=python27 env_itunes
 
-    # itunes setup
-    source env_itunes/bin/activate
-    sudo yum install --assumeyes MySQL-python
-    sudo yum install --assumeyes mysql-server
-    sudo yum install --assumeyes mysql-devel
-    sudo yum install --assumeyes python27-devel
-    sudo yum install --assumeyes gcc
-    sudo yum install --assumeyes python-mysql
-    pip install -r scripts/itunes_store/requirements.txt
-    deactivate
+# spot setup
+source env_spot/bin/activate
+pip install -r scripts/spot_instance/requirements.txt
+deactivate
 
-    # run itunes
-    source env_itunes/bin/activate
-    python scripts/itunes_store/grabber.py
-    deactivate
+# itunes setup
+source env_itunes/bin/activate
+pip install -r scripts/itunes_store/requirements.txt
+deactivate
 
-    # run spot
-    source env_spot/bin/activate
-    python scripts/spot_instance/reschedule_and_terminate.py
-    deactivate
+# run itunes
+source env_itunes/bin/activate
+python scripts/itunes_store/grabber.py
+deactivate
+
+# run spot
+source env_spot/bin/activate
+python scripts/spot_instance/reschedule_and_terminate.py
+deactivate
 '''
 
 class SpotHandler(object):
