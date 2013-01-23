@@ -1,0 +1,46 @@
+---
+processes:
+    - name: Process 1
+      term: a
+    - name: Process 2
+      sequence:
+        - b
+        - c
+        - d
+    - name: Process 3
+      sequence:
+        - e
+        - f
+        - g
+    - name: Process 4
+      sequence:
+        - h
+        - i
+        - j
+    - name: Process 5
+      sequence:
+        - k
+        - l
+        - m
+    - name: Process 6
+      sequence:
+        - n
+        - o
+        - p
+    - name: Process 7
+      sequence:
+        - q
+        - r
+        - s
+    - name: Process 8
+      sequence:
+        - t
+        - u
+        - v
+    - name: Process 9
+      sequence:
+        - w
+        - x
+        - y
+    - name: Process 10
+      term: z
